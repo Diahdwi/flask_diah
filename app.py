@@ -21,7 +21,7 @@ def predict():
         try:
             # 1. Ambil nama model dari dropdown HTML ('Decision Tree' atau 'SVC')
             selected_model_name = request.form['model']
-            
+
             # 2. Ambil data input dari form HTML
             pregnancies = float(request.form['Pregnancies'])
             glucose = float(request.form['Glucose'])
@@ -33,9 +33,9 @@ def predict():
             age = float(request.form['Age'])
 
             # 3. Ubah inputan menjadi DataFrame
-            # Menggunakan nama 'Pregnancy' (Tunggal) sesuai dengan cols saat training data Anda
+            # FIX: Nama kolom diubah menjadi 'Pregnancies' (pakai es) agar cocok dengan model baru
             data = pd.DataFrame({
-                'Pregnancy': [pregnancies],
+                'Pregnancies': [pregnancies],
                 'Glucose': [glucose],
                 'BloodPressure': [blood_pressure],
                 'SkinThickness': [skin_thickness],
@@ -49,16 +49,14 @@ def predict():
             data_scaled = scaler.transform(data)
 
             # 5. PILIH MODEL DARI LIST BERDASARKAN INPUT DROPDOWN
-            # Di kode training kamu: indeks 0 = Decision Tree, indeks 1 = SVC
             if selected_model_name == 'Decision Tree':
                 chosen_model = models_list[0]
             elif selected_model_name == 'SVC':
                 chosen_model = models_list[1]
             else:
-                # Jaga-jaga jika ada pilihan lain (seperti Random Forest di form Anda) namun belum di-train
-                chosen_model = models_list[0] 
+                chosen_model = models_list[0]
 
-            # 6. Lakukan prediksi menggunakan model yang sudah dipilih dari list
+            # 6. Lakukan prediksi menggunakan model yang sudah dipilih
             prediction = chosen_model.predict(data_scaled)
 
             # 7. Konversi hasil prediksi ke teks
@@ -69,7 +67,7 @@ def predict():
 
             # Kembalikan hasil prediksi ke halaman web
             return render_template('index.html', prediction=hasil)
-            
+
         except Exception as e:
             # Menampilkan error agar mudah didebug jika ada kesalahan lain
             return render_template('index.html', prediction=f"Error saat komputasi: {str(e)}")
