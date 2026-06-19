@@ -1,0 +1,15 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache (File hasil kompilasi yang terbuat otomatis)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# File sistem operasi (opsional tapi disarankan)
+.DS_Store
+Thumbs.db
